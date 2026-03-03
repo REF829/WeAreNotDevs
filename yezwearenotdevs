@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ENZO – Roblox Utility</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      width:100%;height:100%;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+      background:#000;
+      color:#f9fafb;
+    }
+    body{
+      display:flex;
+      flex-direction:column;
+      background:radial-gradient(circle at top,#020617 0,#020617 40%,#000 100%);
+    }
+
+    /* Fake iOS Safari bar */
+    .safari-shell{
+      padding-top:8px;
+      padding-bottom:6px;
+      background:linear-gradient(180deg,#111827,#020617);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      border-bottom:1px solid rgba(148,163,184,.4);
+      box-shadow:0 6px 20px rgba(15,23,42,.9);
+    }
+    .safari-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 10px;
+      font-size:11px;
+      color:#e5e7eb;
+      opacity:.85;
+    }
+    .safari-icons{
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+    .dot{
+      width:6px;height:6px;
+      border-radius:999px;
+      background:#e5e7eb;
+      opacity:.8;
+    }
+    .safari-url-row{
+      padding:0 10px 4px;
+      display:flex;
+      justify-content:center;
+    }
+    .safari-url{
+      flex:1;
+      max-width:520px;
+      border-radius:14px;
+      background:#020617;
+      border:1px solid rgba(148,163,184,.65);
+      padding:6px 9px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+    }
+    .lock{
+      font-size:10px;
+      opacity:.8;
+    }
+    .url-text{
+      flex:1;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      opacity:.9;
+    }
+    .refresh{
+      font-size:12px;
+      opacity:.75;
+    }
+
+    /* Page content (Enzo-style hero) */
+    .page{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px 14px 26px;
+    }
+    .card{
+      position:relative;
+      max-width:520px;
+      width:100%;
+      padding:26px 22px 24px;
+      border-radius:24px;
+      background:rgba(15,23,42,.96);
+      box-shadow:0 0 50px rgba(37,99,235,.45);
+      text-align:center;
+      overflow:hidden;
+    }
+    .glow-ring{
+      position:absolute;
+      inset:-45%;
+      background:conic-gradient(from 180deg,#22d3ee,#6366f1,#8b5cf6,#22d3ee);
+      opacity:.18;
+      filter:blur(30px);
+      z-index:-1;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      background:rgba(15,23,42,.9);
+      border:1px solid rgba(148,163,184,.6);
+      color:#a5b4fc;
+      margin-bottom:14px;
+    }
+    h1{
+      font-size:32px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .subtitle{
+      font-size:12px;
+      opacity:.7;
+      margin-bottom:18px;
+    }
+    .desc{
+      font-size:13px;
+      opacity:.88;
+      margin-bottom:22px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:11px 26px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+      background:linear-gradient(135deg,#2563eb,#4f46e5);
+      color:#f9fafb;
+      box-shadow:0 0 30px rgba(37,99,235,.85);
+      transition:transform .13s ease,box-shadow .13s ease,background .13s ease;
+    }
+    .btn:hover{
+      transform:scale(1.04) translateY(-1px);
+      box-shadow:0 0 40px rgba(59,130,246,.95);
+      background:linear-gradient(135deg,#1d4ed8,#4338ca);
+    }
+    .btn:active{
+      transform:scale(.97) translateY(1px);
+      box-shadow:0 0 18px rgba(37,99,235,.7);
+    }
+    .pill-row{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px;
+      font-size:10px;
+      opacity:.85;
+    }
+    .pill{
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.5);
+      background:rgba(15,23,42,.9);
+    }
+    .hint{
+      margin-top:14px;
+      font-size:10px;
+      opacity:.6;
+    }
+
+    /* Small “Safari bottom bar” feel (static) */
+    .bottom-bar{
+      height:34px;
+      border-top:1px solid rgba(15,23,42,.9);
+      background:linear-gradient(180deg,rgba(15,23,42,.95),#020617);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:26px;
+      font-size:10px;
+      color:#9ca3af;
+    }
+    .bottom-dot{
+      width:4px;height:4px;border-radius:999px;background:#9ca3af;opacity:.7;
+    }
+  </style>
+</head>
+<body>
+  <!-- iOS Safari chrome clone -->
+  <header class="safari-shell">
+    <div class="safari-top">
+      <div class="safari-icons">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div>9:41</div>
+      <div class="safari-icons">
+        <span>LTE</span>
+        <span>🔋</span>
+      </div>
+    </div>
+    <div class="safari-url-row">
+      <div class="safari-url">
+        <span class="lock">🔒</span>
+        <span class="url-text">enzostudios.xyz</span>
+        <span class="refresh">↻</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Enzo-style hero content -->
+  <main class="page">
+    <section class="card">
+      <div class="glow-ring"></div>
+      <div class="tag">
+        <span>ENZO • ROBLOX UTILITY</span>
+      </div>
+      <h1>ENZO</h1>
+      <p class="subtitle">Powerful Roblox script executor</p>
+      <p class="desc">
+        Built for stability, speed, and a sleek user experience.  
+        Optimized for Comet on Windows and modern Roblox updates.
+      </p>
+      <button class="btn" id="downloadBtn">
+        <span>↓ Download for Windows</span>
+      </button>
+      <div class="pill-row">
+        <div class="pill">64‑bit only</div>
+        <div class="pill">Auto‑updates</div>
+        <div class="pill">Comet‑ready</div>
+      </div>
+      <p class="hint">If nothing happens, right‑click the button and choose “Save link as…”.</p>
+    </section>
+  </main>
+
+  <footer class="bottom-bar">
+    <span>◀︎</span>
+    <span>▶︎</span>
+    <span class="bottom-dot"></span>
+    <span>⟳</span>
+    <span>☰</span>
+  </footer>
+
+  <script>
+    // Put your real download link here
+    const DOWNLOAD_URL = "https://example.com/enzo-setup.exe";
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = DOWNLOAD_URL;
+      a.download = "";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  </script>
+</body>
+</html>
